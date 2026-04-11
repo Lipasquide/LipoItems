@@ -1,5 +1,5 @@
 plugins {
-    java
+    kotlin("jvm") version "2.0.21"
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
     id("com.gradleup.shadow") version "8.3.5"
 }
@@ -21,8 +21,11 @@ repositories {
 
 dependencies {
     // Paper API with NMS access
-    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+
+    // Kotlin
+    implementation(kotlin("stdlib"))
 
     // Adventure for text components
     implementation("net.kyori:adventure-api:4.17.0")
@@ -36,22 +39,19 @@ dependencies {
     // FastUtil for collections
     implementation("it.unimi.dsi:fastutil:8.5.14")
 
-    // NBT handling
-    implementation("io.github.rapha149.sign:signplugin:1.2.0")
-
-    // Cloud commands (optional, for better command handling)
+    // Cloud commands
     implementation("cloud.commandframework:cloud-paper:2.0.0-beta.10")
     implementation("cloud.commandframework:cloud-minecraft-extras:2.0.0-beta.10")
+    implementation("cloud.commandframework:cloud-kotlin-extensions:2.0.0-beta.10")
+    implementation("cloud.commandframework:cloud-kotlin-coroutines:2.0.0-beta.10")
 }
 
 tasks {
-    compileJava {
-        options.release.set(21)
-        options.encoding = "UTF-8"
-    }
-
-    javadoc {
-        options.encoding = "UTF-8"
+    compileKotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xjdk-release=21")
+        }
     }
 
     processResources {
@@ -74,11 +74,13 @@ tasks {
         relocate("net.kyori", "dev.lipasquide.lipoitems.libs.kyori")
         relocate("com.google.gson", "dev.lipasquide.lipoitems.libs.gson")
         relocate("it.unimi.dsi", "dev.lipasquide.lipoitems.libs.fastutil")
+        relocate("cloud.commandframework", "dev.lipasquide.lipoitems.libs.cloud")
 
         dependencies {
             include(dependency("net.kyori:.*"))
             include(dependency("com.google.code.gson:.*"))
             include(dependency("it.unimi.dsi:.*"))
+            include(dependency("cloud.commandframework:.*"))
         }
     }
 

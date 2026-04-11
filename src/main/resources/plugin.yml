@@ -1,0 +1,6 @@
+name: LipoItems
+version: ${version}
+main: dev.lipasquide.lipoitems.LipoItems
+api-version: '1.21'
+author: lipasquide
+description: Advanced custom items, armor, and blocks plugin.
