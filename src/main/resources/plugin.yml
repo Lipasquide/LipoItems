@@ -1,0 +1,7 @@
+name: LipoItems
+version: '${version}'
+main: dev.lipasquide.lipoitems.LipoItems
+api-version: '1.21'
+author: lipasquide
+description: Custom items and blocks plugin for Paper.
+depend: [PacketEvents]
